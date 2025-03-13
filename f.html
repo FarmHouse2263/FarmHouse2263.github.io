@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Clicker - เกมน่ารักสำหรับคนพิเศษ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6f2;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            color: #ff3385;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+        
+        h1 {
+            color: #ff3385;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+        }
+        
+        .heart {
+            font-size: 100px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+            display: inline-block;
+            margin: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .heart:hover {
+            transform: scale(1.1);
+        }
+        
+        .heart:active {
+            transform: scale(0.9);
+        }
+        
+        .counter {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .message {
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 18px;
+            min-height: 30px;
+            color: #ff3385;
+        }
+        
+        .upgrade {
+            background-color: #ff3385;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .upgrade:hover {
+            background-color: #ff69b4;
+            transform: scale(1.05);
+        }
+        
+        .upgrade:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            animation: float 2s forwards;
+            opacity: 1;
+        }
+        
+        @keyframes float {
+            to {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .special-message {
+            display: none;
+            padding: 20px;
+            background-color: #fff0f5;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-style: italic;
+            border: 2px dashed #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Love Clicker</h1>
+        <p>คลิกที่หัวใจเพื่อรวบรวมความรัก</p>
+        
+        <div class="heart" id="heart">❤️</div>
+        
+        <div class="counter">
+            ความรักสะสม: <span id="love-count">0</span>
+        </div>
+        
+        <div class="message" id="message"></div>
+        
+        <div>
+            <button class="upgrade" id="upgrade1" disabled>อัพเกรดพลังรัก (ราคา: 10 ❤️)</button>
+            <button class="upgrade" id="upgrade2" disabled>เสริมพลังหัวใจ (ราคา: 50 ❤️)</button>
+            <button class="upgrade" id="special-button" disabled>ข้อความพิเศษ (ราคา: 100 ❤️)</button>
+        </div>
+        
+        <div class="special-message" id="special-message">
+            สำหรับคนพิเศษของฉัน ขอบคุณที่เข้ามาในชีวิต ❤️
+            <br><br>
+            <span id="custom-message">ฉันรักคุณมาก!</span>
+        </div>
+    </div>
+
+    <script>
+        let loveCount = 0;
+        let clickPower = 1;
+        let autoClickerActive = false;
+        let autoClickPower = 0;
+        
+        const messages = [
+            "ความรักของเราเริ่มต้นแล้ว!",
+            "หัวใจเต้นแรงขึ้นทุกวัน",
+            "คุณทำให้ฉันมีความสุขเสมอ",
+            "เรารักกันตลอดไป",
+            "ทุกวันที่มีคุณคือวันพิเศษ",
+            "คุณคือดวงดาวในชีวิตฉัน",
+            "เราผ่านทุกอย่างไปด้วยกัน",
+            "ขอบคุณที่อยู่เคียงข้างกัน",
+            "คุณคือความสุขที่ฉันรอคอย",
+            "รักคุณมากกว่าที่คำพูดจะบรรยายได้"
+        ];
+        
+        const heart = document.getElementById('heart');
+        const loveCountElement = document.getElementById('love-count');
+        const messageElement = document.getElementById('message');
+        const upgrade1Button = document.getElementById('upgrade1');
+        const upgrade2Button = document.getElementById('upgrade2');
+        const specialButton = document.getElementById('special-button');
+        const specialMessage = document.getElementById('special-message');
+        const customMessage = document.getElementById('custom-message');
+        
+        // คุณสามารถเปลี่ยนข้อความส่วนตัวได้ที่นี่
+        const personalMessage = "ฉันรักคุณที่สุดในโลก และจะรักคุณตลอดไป ❤️";
+        
+        heart.addEventListener('click', () => {
+            addLove(clickPower);
+            createFloatingHeart();
+            
+            // สุ่มข้อความเมื่อคลิก
+            if (Math.random() < 0.3) {
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                messageElement.textContent = randomMessage;
+            }
+        });
+        
+        upgrade1Button.addEventListener('click', () => {
+            if (loveCount >= 10) {
+                loveCount -= 10;
+                clickPower += 1;
+                updateCounter();
+                messageElement.textContent = "อัพเกรดพลังรักสำเร็จ! ตอนนี้คุณได้รับความรัก " + clickPower + " หน่วยต่อคลิก";
+                upgrade1Button.textContent = "อัพเกรดพลังรัก (ราคา: " + (10 + clickPower * 5) + " ❤️)";
+                upgrade1Button.disabled = loveCount < (10 + clickPower * 5);
+            }
+        });
+        
+        upgrade2Button.addEventListener('click', () => {
+            if (loveCount >= 50) {
+                loveCount -= 50;
+                autoClickPower += 1;
+                updateCounter();
+                
+                if (!autoClickerActive) {
+                    autoClickerActive = true;
+                    setInterval(() => {
+                        addLove(autoClickPower);
+                    }, 1000);
+                }
+                
+                messageElement.textContent = "เสริมพลังหัวใจสำเร็จ! ได้รับความรักอัตโนมัติ " + autoClickPower + " หน่วยต่อวินาที";
+                upgrade2Button.textContent = "เสริมพลังหัวใจ (ราคา: " + (50 + autoClickPower * 25) + " ❤️)";
+                upgrade2Button.disabled = loveCount < (50 + autoClickPower * 25);
+            }
+        });
+        
+        specialButton.addEventListener('click', () => {
+            if (loveCount >= 100) {
+                loveCount -= 100;
+                updateCounter();
+                customMessage.textContent = personalMessage;
+                specialMessage.style.display = 'block';
+                specialButton.disabled = true;
+                specialButton.textContent = "ข้อความพิเศษถูกปลดล็อคแล้ว!";
+            }
+        });
+        
+        function addLove(amount) {
+            loveCount += amount;
+            updateCounter();
+            checkUpgrades();
+        }
+        
+        function updateCounter() {
+            loveCountElement.textContent = loveCount;
+        }
+        
+        function checkUpgrades() {
+            upgrade1Button.disabled = loveCount < 10;
+            upgrade2Button.disabled = loveCount < 50;
+            specialButton.disabled = loveCount < 100 || specialMessage.style.display === 'block';
+        }
+        
+        function createFloatingHeart() {
+            const floatingHeart = document.createElement('div');
+            floatingHeart.className = 'floating-heart';
+            floatingHeart.innerHTML = '❤️';
+            
+            // สุ่มตำแหน่ง
+            const heartRect = heart.getBoundingClientRect();
+            const x = heartRect.left + Math.random() * heartRect.width;
+            const y = heartRect.top + Math.random() * (heartRect.height / 2);
+            
+            floatingHeart.style.left = `${x}px`;
+            floatingHeart.style.top = `${y}px`;
+            
+            document.body.appendChild(floatingHeart);
+            
+            // ลบหลังจากแอนิเมชั่นเสร็จสิ้น
+            setTimeout(() => {
+                floatingHeart.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
