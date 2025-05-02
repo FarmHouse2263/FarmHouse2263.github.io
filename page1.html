@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>หน้า 1</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- <script src="script.js" defer></script> -->
+
+  <style>
+    /* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Prompt', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ffccd5, #ffafcc, #bde0fe, #a2d2ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+}
+
+/* เพิ่มพาร์ติเคิลหัวใจลอยในพื้นหลัง */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* จัดการหัวใจพื้นหลัง */
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: rotate(45deg);
+  animation: fall linear forwards;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: -10px;
+}
+
+@keyframes fall {
+  to {
+    transform: rotate(45deg) translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.page {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  transform: scale(0.9);
+  opacity: 0;
+  animation: appear 1s forwards 0.5s;
+}
+
+@keyframes appear {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+h1 {
+  color: #ff6b94;
+  margin-bottom: 20px;
+  font-size: 32px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff6b94, transparent);
+}
+
+p {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+button {
+  background-color: #ff6b94;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 107, 148, 0.4);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  transform: translateY(-2px);
+}
+
+/* Decorative elements */
+.page::before,
+.page::after {
+  content: "💕";
+  position: absolute;
+  font-size: 28px;
+}
+
+.page::before {
+  top: -15px;
+  left: 20px;
+  animation: pulse 2s infinite;
+}
+
+.page::after {
+  bottom: -15px;
+  right: 20px;
+  animation: pulse 2s infinite 1s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* เพิ่ม script สำหรับสร้างหัวใจในพื้นหลัง */
+  </style>
+</head>
+<body>
+  <div class="page active">
+    <h1>สวัสดีคนน่ารัก 💕</h1>
+    <p>หร้อมอะยางงง ถ้าพร้อมแล้วไปกันต่อ</p>
+    <button onclick="goTo('page2.html')">ไปกันเลย!</button>
+  </div>
+</body>
+
+<script>
+    // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
+document.addEventListener("DOMContentLoaded", function() {
+    if (!sessionStorage.getItem("loggedIn")) {
+      window.location.href = "index.html";
+    }
+    
+    // สร้างหัวใจในพื้นหลัง
+    createHearts();
+  });
+  
+  // ฟังก์ชันนำทางไปหน้าถัดไป
+  function goTo(page) {
+    const currentPage = document.querySelector('.page');
+    
+    // เอฟเฟกต์เปลี่ยนหน้า
+    currentPage.style.animation = "fadeOut 0.5s forwards";
+    
+    setTimeout(() => {
+      window.location.href = page;
+    }, 500);
+  }
+  
+  // สร้างหัวใจในพื้นหลัง
+  function createHearts() {
+    const body = document.body;
+    const heartColors = [
+      "#ff6b94", "#ff8fab", "#ffafcc", "#ffc8dd", 
+      "#bde0fe", "#a2d2ff", "#ffc2d1", "#ffb3c6"
+    ];
+    
+    // สร้างหัวใจทุกๆ 300 มิลลิวินาที
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      
+      // สุ่มตำแหน่ง ขนาด และสี
+      const size = Math.random() * 15 + 10;
+      const posX = Math.random() * window.innerWidth;
+      const delay = Math.random() * 2;
+      const duration = Math.random() * 5 + 5;
+      const colorIndex = Math.floor(Math.random() * heartColors.length);
+      
+      heart.style.left = posX + "px";
+      heart.style.top = "-20px";
+      heart.style.width = size + "px";
+      heart.style.height = size + "px";
+      heart.style.backgroundColor = heartColors[colorIndex];
+      heart.style.animationDuration = duration + "s";
+      heart.style.animationDelay = delay + "s";
+      
+      // ปรับสีของ pseudo-elements
+      const styleSheet = document.styleSheets[0];
+      const heartIndex = Array.from(document.querySelectorAll(".heart")).length;
+      const heartSelector = `.heart:nth-child(${heartIndex + 1})::before, .heart:nth-child(${heartIndex + 1})::after`;
+      
+      try {
+        styleSheet.insertRule(`${heartSelector} { background-color: ${heartColors[colorIndex]}; }`, styleSheet.cssRules.length);
+      } catch (e) {
+        // บางเบราว์เซอร์อาจไม่สนับสนุนการแก้ไข stylesheet
+      }
+      
+      // ลบหัวใจเมื่อแอนิเมชั่นจบ
+      heart.addEventListener("animationend", () => {
+        heart.remove();
+      });
+      
+      body.appendChild(heart);
+    }, 300);
+  }
+  
+  // เพิ่มเอฟเฟกต์ fadeOut
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>หน้า 2</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- <script src="script.js" defer></script> -->
+
+<style>
+    /* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Prompt', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ffccd5, #ffafcc, #bde0fe, #a2d2ff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+  padding: 20px;
+}
+
+/* เพิ่มพาร์ติเคิลหัวใจและดอกไม้ในพื้นหลัง */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* จัดการหัวใจพื้นหลัง */
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: rotate(45deg);
+  animation: fall linear forwards;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: -10px;
+}
+
+@keyframes fall {
+  to {
+    transform: rotate(45deg) translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* จัดการดอกไม้ในพื้นหลัง */
+.flower {
+  position: absolute;
+  font-size: 20px;
+  animation: float linear forwards;
+  opacity: 0.8;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.page {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+  width: 450px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  transform: scale(0.9);
+  opacity: 0;
+  animation: appear 1s forwards 0.5s;
+  overflow: hidden;
+}
+
+@keyframes appear {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+h1 {
+  color: #ff6b94;
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff6b94, transparent);
+}
+
+p {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* จัดการรูปภาพ */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: scale(0.95);
+  transition: all 0.5s ease;
+  position: relative;
+  z-index: 1;
+}
+
+img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 107, 148, 0.2);
+  z-index: -1;
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+img:hover {
+  transform: scale(1);
+  box-shadow: 0 12px 25px rgba(255, 107, 148, 0.25);
+}
+
+img:hover::before {
+  opacity: 1;
+}
+
+button {
+  background-color: #ff6b94;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 107, 148, 0.4);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  transform: translateY(-2px);
+}
+
+/* Decorative elements */
+.page::before,
+.page::after {
+  content: "🌸";
+  position: absolute;
+  font-size: 24px;
+}
+
+.page::before {
+  top: -10px;
+  left: 20px;
+  animation: spin 6s linear infinite;
+}
+
+.page::after {
+  bottom: -10px;
+  right: 20px;
+  animation: spin 6s linear infinite reverse;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* อนิเมชันเฟดเอาท์สำหรับเปลี่ยนหน้า */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>อยากเห็นแล้วใช้มั้ยละ</h1>
+    <p>ใกล้ถึงแล้ว อีกนิดเดียวน้าาา</p>
+    <!-- <img src="23076.jpg" alt="ภาพน่ารัก"> -->
+    <button onclick="goTo('page3.html')">ถัดไป</button>
+  </div>
+</body>
+
+<script>
+    // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
+document.addEventListener("DOMContentLoaded", function() {
+    if (!sessionStorage.getItem("loggedIn")) {
+      window.location.href = "index.html";
+    }
+    
+    // สร้างดอกไม้และหัวใจในพื้นหลัง
+    createHearts();
+    createFlowers();
+    
+    // เพิ่มเอฟเฟกต์โหลดสำหรับรูปภาพ
+    const image = document.querySelector('img');
+    if (image) {
+      // เอฟเฟกต์โหลดรูปภาพ
+      image.style.opacity = "0";
+      image.style.transform = "scale(0.8)";
+      
+      image.onload = function() {
+        setTimeout(() => {
+          image.style.transition = "all 1s ease";
+          image.style.opacity = "1";
+          image.style.transform = "scale(0.95)";
+        }, 300);
+      };
+      
+      // ถ้ารูปโหลดเสร็จแล้ว (จาก cache) ก็ทำเอฟเฟกต์เลย
+      if (image.complete) {
+        setTimeout(() => {
+          image.style.transition = "all 1s ease";
+          image.style.opacity = "1";
+          image.style.transform = "scale(0.95)";
+        }, 300);
+      }
+    }
+    
+    // เพิ่ม animation เข้ามาในหน้า
+    const page = document.querySelector('.page');
+    if (page && !page.classList.contains('active')) {
+      page.classList.add('active');
+    }
+  });
+  
+  // ฟังก์ชันนำทางไปหน้าถัดไป
+  function goTo(page) {
+    const currentPage = document.querySelector('.page');
+    
+    // เอฟเฟกต์เปลี่ยนหน้า
+    currentPage.style.animation = "fadeOut 0.5s forwards";
+    
+    setTimeout(() => {
+      window.location.href = page;
+    }, 500);
+  }
+  
+  // สร้างหัวใจในพื้นหลัง
+  function createHearts() {
+    const body = document.body;
+    const heartColors = [
+      "#ff6b94", "#ff8fab", "#ffafcc", "#ffc8dd", 
+      "#bde0fe", "#a2d2ff", "#ffc2d1", "#ffb3c6"
+    ];
+    
+    // สร้างหัวใจทุกๆ 800 มิลลิวินาที (ปรับลดอัตราการสร้างลงเพื่อไม่ให้มากเกินไป)
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      
+      // สุ่มตำแหน่ง ขนาด และสี
+      const size = Math.random() * 15 + 10;
+      const posX = Math.random() * window.innerWidth;
+      const delay = Math.random() * 2;
+      const duration = Math.random() * 5 + 5;
+      const colorIndex = Math.floor(Math.random() * heartColors.length);
+      
+      heart.style.left = posX + "px";
+      heart.style.top = "-20px";
+      heart.style.width = size + "px";
+      heart.style.height = size + "px";
+      heart.style.backgroundColor = heartColors[colorIndex];
+      heart.style.animationDuration = duration + "s";
+      heart.style.animationDelay = delay + "s";
+      
+      // ปรับสีของ pseudo-elements
+      const styleSheet = document.styleSheets[0];
+      const heartIndex = Array.from(document.querySelectorAll(".heart")).length;
+      const heartSelector = `.heart:nth-child(${heartIndex + 1})::before, .heart:nth-child(${heartIndex + 1})::after`;
+      
+      try {
+        styleSheet.insertRule(`${heartSelector} { background-color: ${heartColors[colorIndex]}; }`, styleSheet.cssRules.length);
+      } catch (e) {
+        // บางเบราว์เซอร์อาจไม่สนับสนุนการแก้ไข stylesheet
+      }
+      
+      // ลบหัวใจเมื่อแอนิเมชั่นจบ
+      heart.addEventListener("animationend", () => {
+        heart.remove();
+      });
+      
+      body.appendChild(heart);
+    }, 800);
+  }
+  
+  // สร้างดอกไม้ในพื้นหลัง (เพิ่มใหม่สำหรับหน้านี้)
+  function createFlowers() {
+    const body = document.body;
+    const flowerEmojis = ["🌸", "🌼", "💮", "🌺", "🌹"];
+    
+    // สร้างดอกไม้ทุกๆ 1000 มิลลิวินาที
+    setInterval(() => {
+      const flower = document.createElement("div");
+      flower.classList.add("flower");
+      
+      // สุ่มตำแหน่ง ขนาด และชนิดดอกไม้
+      const size = Math.random() * 20 + 15;
+      const posX = Math.random() * window.innerWidth;
+      const posY = window.innerHeight + 10;
+      const duration = Math.random() * 8 + 10;
+      const flowerIndex = Math.floor(Math.random() * flowerEmojis.length);
+      
+      flower.innerHTML = flowerEmojis[flowerIndex];
+      flower.style.left = posX + "px";
+      flower.style.bottom = "0";
+      flower.style.fontSize = size + "px";
+      flower.style.animationDuration = duration + "s";
+      
+      // ลบดอกไม้เมื่อแอนิเมชั่นจบ
+      flower.addEventListener("animationend", () => {
+        flower.remove();
+      });
+      
+      body.appendChild(flower);
+    }, 1000);
+  }
+</script>
+</html>
